@@ -76,7 +76,7 @@ public class CrptApi {
     }
 
     private void controlRequestDuration() throws InterruptedException {
-        var  delta = SECONDS.between(DOCUMENT_SENDING_START_AT.get(), DOCUMENT_SENDING_FINISHED_AT.get());
+        var delta = SECONDS.between(DOCUMENT_SENDING_START_AT.get(), DOCUMENT_SENDING_FINISHED_AT.get());
         var durationLimit = timeAccessInterval + ADDITIONAL_DELAY_SECONDS;
         if (delta < durationLimit) {
             Thread.sleep(durationLimit - delta);
@@ -209,7 +209,7 @@ public class CrptApi {
         }
     }
 
-    public static final class ExceptionCode {
+    public final class ExceptionCode {
         public static final String DOCUMENT_UPLOAD_ERROR = "document.upload.error";
     }
 }
