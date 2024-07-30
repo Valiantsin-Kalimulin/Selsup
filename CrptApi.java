@@ -67,7 +67,7 @@ public class CrptApi {
             DOCUMENT_SENDING_START_AT.set(LocalTime.now());
             documentService.sendDocumentToTrueSign(document);
             DOCUMENT_SENDING_FINISHED_AT.set(LocalTime.now());
-            checkRequestDuration();
+            controlRequestDuration();
             semaphore.release();
         } catch (InterruptedException e) {
             log.error("The document was not sent: {}", e.getMessage());
@@ -75,10 +75,11 @@ public class CrptApi {
         }
     }
 
-    private void checkRequestDuration() throws InterruptedException {
+    private void controlRequestDuration() throws InterruptedException {
         var  delta = SECONDS.between(DOCUMENT_SENDING_START_AT.get(), DOCUMENT_SENDING_FINISHED_AT.get());
-        if (delta < timeAccessInterval) {
-            Thread.sleep((timeAccessInterval + ADDITIONAL_DELAY_SECONDS) - delta);
+        var durationLimit = timeAccessInterval + ADDITIONAL_DELAY_SECONDS;
+        if (delta < durationLimit) {
+            Thread.sleep(durationLimit - delta);
         }
     }
 
